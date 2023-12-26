@@ -22,8 +22,8 @@ const DatePicker = (props) => {
             <YearRow>
                 { currentYear }년
                 <ButtonContainer>
-                    <img width={24} height={24} src="/assets/prev.svg" alt="" onClick={() => moveYear('prev')}/>
-                    <img width={24} height={24} src="/assets/next.svg" alt="" onClick={() => moveYear('next')}/>
+                    <img style={{ cursor: "pointer" }} width={24} height={24} src="/assets/prev.svg" alt="" onClick={() => moveYear('prev')}/>
+                    <img style={{ cursor: "pointer" }} width={24} height={24} src="/assets/next.svg" alt="" onClick={() => moveYear('next')}/>
                 </ButtonContainer>
             </YearRow>
             <MonthGrid>
@@ -48,6 +48,9 @@ const DatePickerContainer = styled.div`
   box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   padding: 20px;
+  box-sizing: border-box;
+  z-index: 2;
+  background-color: #ffffff;
 `;
 
 const YearRow = styled.div`
