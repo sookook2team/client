@@ -1,13 +1,10 @@
-import Header from "../components/common/header";
-import Footer from "../components/common/footer";
 import styled from "styled-components";
+import Signup1 from "../components/main";
 
 const Main = () => {
     return (
         <Container>
-            <Header />
-                Main
-            <Footer />
+            <Signup1 />
         </Container>
     )
 }
