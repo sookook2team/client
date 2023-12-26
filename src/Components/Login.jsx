@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Container } from "./main";
 import styled from "styled-components";
-import {BackButton, BackButtonContainer, BackButtonWrap} from "./register";
+import { BackButton, BackButtonContainer, BackButtonWrap } from "./register";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginComponent() {
@@ -13,11 +13,14 @@ export default function LoginComponent() {
   return (
     <Container>
       <BackButtonContainer>
-          <BackButtonWrap onClick={onClickBtn}>
-              <BackButton />
-          </BackButtonWrap>
+        <BackButtonWrap onClick={onClickBtn}>
+          <BackButton />
+        </BackButtonWrap>
       </BackButtonContainer>
-      <img src="/assets/background_logo.svg" alt="" />
+      <img
+        src='/assets/background_logo.svg'
+        alt=''
+      />
       <form
         action='submit'
         id='Loginform'
@@ -31,7 +34,7 @@ export default function LoginComponent() {
           placeholder='비밀번호'
         />
       </form>
-      <Button>로그인</Button>
+      <Button type='submit'>로그인</Button>
     </Container>
   );
 }
