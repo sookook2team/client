@@ -1,53 +1,7 @@
 import React, { useState } from "react";
-import { Button, Container, Logo } from "./signup_1";
+import { Button, Container } from "./main";
 import styled from "styled-components";
-import bracket from "../Img/back.png";
 import { useNavigate } from "react-router-dom";
-
-export const InputButton = styled.input`
-  border: none;
-  outline: none;
-  border-bottom: 1px solid gray;
-  display: flex;
-  margin: 30px;
-  width: 295px;
-  height: 22px;
-`;
-
-export const BackButton = styled.div`
-  background-image: url(${bracket});
-  width: 10px;
-  height: 16px;
-  margin-right: 345px;
-  cursor: pointer;
-  margin-bottom: 756px;
-  position: absolute;
-`;
-
-export const Checkbox = styled.input`
-  margin-left: 30px;
-  margin-bottom: 50px;
-  background: url() no-repeat;
-  background-size: cover;
-  &checked {
-    background: url() no-repeat;
-    background-size: cover;
-  }
-`;
-
-const Agreelabel = styled.label`
-  font-size: smaller;
-  margin-left: 5px;
-  color: #7a7a7a;
-`;
-
-const Error = styled.p`
-  font-size: smaller;
-  text-align: center;
-  color: red;
-  margin-top: 360px;
-  position: absolute;
-`;
 
 export default function Signup2() {
   const navigate = useNavigate();
@@ -86,7 +40,7 @@ export default function Signup2() {
     if (isValidEmail && validPassword) {
       const agreeBox = document.getElementById("agreebox");
       if (agreeBox.checked) {
-        navigate("/");
+        navigate("/home");
       } else {
         setError("개인정보 활용에 동의해야 합니다.");
       }
@@ -101,8 +55,12 @@ export default function Signup2() {
 
   return (
     <Container>
-      <BackButton onClick={onClickBtn} />
-      <Logo />
+      <BackButtonContainer>
+        <BackButtonWrap onClick={onClickBtn}>
+          <BackButton />
+        </BackButtonWrap>
+      </BackButtonContainer>
+      <img src="/assets/background_logo.svg" alt=""/>
       <form
         action='submit'
         id='joinform'
@@ -129,10 +87,68 @@ export default function Signup2() {
           type='checkbox'
           id='agreebox'
         />
-        <Agreelabel for='agreebox'>개인정보 활용에 동의하십니까?</Agreelabel>
+        <AgreeLabel for='agreebox'>개인정보 활용에 동의하십니까?</AgreeLabel>
       </form>
       {error && <Error>{error}</Error>}
       <Button onClick={handleSubmit}>회원가입완료</Button>
     </Container>
   );
 }
+export const InputButton = styled.input`
+  border: none;
+  outline: none;
+  border-bottom: 1px solid gray;
+  display: flex;
+  margin: 30px;
+  width: 295px;
+  height: 22px;
+`;
+export const BackButtonContainer = styled.div`
+  width: 100%;
+  height: 80px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+  top: 0;
+`;
+
+export const BackButtonWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+`;
+export const BackButton = styled.div`
+  background-image: url("/assets/back.svg");  
+  width: 10px;
+  height: 16px;
+  cursor: pointer;
+`;
+
+export const Checkbox = styled.input`
+  margin-left: 30px;
+  margin-bottom: 50px;
+  background: no-repeat;
+  background-size: cover;
+  &checked {
+    background: no-repeat;
+    background-size: cover;
+  }
+`;
+
+const AgreeLabel = styled.label`
+  font-size: smaller;
+  margin-left: 5px;
+  color: #7a7a7a;
+`;
+
+const Error = styled.p`
+  font-size: smaller;
+  text-align: center;
+  color: red;
+  margin-top: 360px;
+  position: absolute;
+`;

@@ -1,16 +1,36 @@
 import React from "react";
 import styled from "styled-components";
-import logoImage from "../Img/logo.png";
 import { useNavigate } from "react-router-dom";
 
+export default function Signup1() {
+  const navigate = useNavigate();
+
+  const onClickBtn = (type) => {
+      navigate(`/${type}`)
+  }
+
+  return (
+    <Container>
+      <img src="/assets/background_logo.svg" alt="" />
+      <SignupIntro>
+        그 날 그 날 있었던 우리의 추억.
+        <br />
+        같이 떠나보실래요?
+      </SignupIntro>
+      <Button onClick={() => onClickBtn('login')}>로그인</Button>
+      <Button onClick={() => onClickBtn('register')}>회원가입</Button>
+    </Container>
+  );
+}
+
 export const Container = styled.div`
-  width: 375px;
-  height: 812px;
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 3px solid black;
+  position: relative;
 `;
 
 export const Button = styled.button`
@@ -26,9 +46,7 @@ export const Button = styled.button`
 `;
 
 export const Logo = styled.div`
-  width: 250px;
-  height: 148px;
-  background-image: url(${logoImage});
+  background-image: url("/assets/background_logo.svg");
   background-size: cover;
   background-position: center;
   border: 0;
@@ -43,28 +61,3 @@ const SignupIntro = styled.p`
   margin-left: 80px;
   line-height: 30px;
 `;
-
-export default function Signup1() {
-  const navigate = useNavigate();
-
-  const onClickLog = () => {
-    navigate(`/Login`);
-  };
-
-  const onClickJoin = () => {
-    navigate(`/signup_2`);
-  };
-
-  return (
-    <Container>
-      <Logo />
-      <SignupIntro>
-        그 날 그 날 있었던 우리의 추억.
-        <br />
-        같이 떠나보실래요?
-      </SignupIntro>
-      <Button onClick={onClickLog}>로그인</Button>
-      <Button onClick={onClickJoin}>회원가입</Button>
-    </Container>
-  );
-}

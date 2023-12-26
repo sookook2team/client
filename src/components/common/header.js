@@ -6,6 +6,7 @@ const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const path = location.pathname.split("/")[1];
+    console.log('!');
     console.log(path);
     console.log(location);
     console.log(param);

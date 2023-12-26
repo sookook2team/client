@@ -1,20 +1,10 @@
-import React, { useState } from "react";
-import { Button, Container, Logo } from "./signup_1";
+import React from "react";
+import { Button, Container } from "./main";
 import styled from "styled-components";
-import { BackButton } from "./signup_2";
+import {BackButton, BackButtonContainer, BackButtonWrap} from "./register";
 import { useNavigate } from "react-router-dom";
 
-export const InputButton = styled.input`
-  border: none;
-  outline: none;
-  border-bottom: 1px solid gray;
-  display: flex;
-  margin: 30px;
-  width: 295px;
-  height: 22px;
-`;
-
-export default function Login() {
+export default function LoginComponent() {
   const navigate = useNavigate();
   const onClickBtn = () => {
     navigate(-1);
@@ -22,8 +12,12 @@ export default function Login() {
 
   return (
     <Container>
-      <BackButton onClick={onClickBtn} />
-      <Logo />
+      <BackButtonContainer>
+          <BackButtonWrap onClick={onClickBtn}>
+              <BackButton />
+          </BackButtonWrap>
+      </BackButtonContainer>
+      <img src="/assets/background_logo.svg" alt="" />
       <form
         action='submit'
         id='Loginform'
@@ -41,3 +35,13 @@ export default function Login() {
     </Container>
   );
 }
+
+export const InputButton = styled.input`
+  border: none;
+  outline: none;
+  border-bottom: 1px solid gray;
+  display: flex;
+  margin: 30px;
+  width: 295px;
+  height: 22px;
+`;
