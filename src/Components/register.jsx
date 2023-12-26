@@ -9,6 +9,7 @@ export default function Signup2() {
   const [isValidEmail, setValidEmail] = useState(false);
   const [password, setPassword] = useState("");
   const [validPassword, setValidPassword] = useState(false);
+  const [passwordchk, setPasswordchk] = useState("");
   const [error, setError] = useState("");
 
   const handleEmailChange = (event) => {
@@ -27,23 +28,19 @@ export default function Signup2() {
     setValidPassword(passwordRegExp.test(newPassword));
   };
 
-  const chkValid = (event) => {
-    if (!isValidEmail || !validPassword) {
-      setError("입력값을 확인하세요.");
-    } else {
-      setError("");
-    }
-  };
+  const isSame = password === passwordchk;
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (isValidEmail && validPassword) {
+    if (isValidEmail && validPassword && isSame) {
       const agreeBox = document.getElementById("agreebox");
       if (agreeBox.checked) {
         navigate("/home");
       } else {
         setError("개인정보 활용에 동의해야 합니다.");
       }
+    } else if (!isSame) {
+      setError("비밀번호가 일치하지 않습니다.");
     } else {
       setError("입력값을 확인하세요.");
     }
@@ -60,10 +57,14 @@ export default function Signup2() {
           <BackButton />
         </BackButtonWrap>
       </BackButtonContainer>
-      <img src="/assets/background_logo.svg" alt=""/>
+      <img
+        src='/assets/background_logo.svg'
+        alt=''
+      />
       <form
-        action='submit'
+        action='목적지url'
         id='joinform'
+        method=''
       >
         <InputButton
           type='text'
@@ -73,16 +74,22 @@ export default function Signup2() {
           type='email'
           placeholder='이메일'
           onChange={handleEmailChange}
+          value={email}
         />
         <InputButton
           type='password'
           placeholder='비밀번호'
           onChange={handlePasswordChange}
+          value={password}
         />
+
         <InputButton
           type='password'
           placeholder='비밀번호 확인'
+          onChange={(event) => setPasswordchk(event.target.value)}
+          value={passwordchk}
         />
+
         <Checkbox
           type='checkbox'
           id='agreebox'
@@ -94,6 +101,7 @@ export default function Signup2() {
     </Container>
   );
 }
+
 export const InputButton = styled.input`
   border: none;
   outline: none;
@@ -103,6 +111,7 @@ export const InputButton = styled.input`
   width: 295px;
   height: 22px;
 `;
+
 export const BackButtonContainer = styled.div`
   width: 100%;
   height: 80px;
@@ -121,8 +130,9 @@ export const BackButtonWrap = styled.div`
   width: 40px;
   height: 40px;
 `;
+
 export const BackButton = styled.div`
-  background-image: url("/assets/back.svg");  
+  background-image: url("/assets/back.svg");
   width: 10px;
   height: 16px;
   cursor: pointer;
