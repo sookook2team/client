@@ -6,10 +6,6 @@ const Header = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const path = location.pathname.split("/")[1];
-    console.log('!');
-    console.log(path);
-    console.log(location);
-    console.log(param);
     return (
         <Container>
             { path === 'feed' &&
@@ -36,7 +32,11 @@ const Header = () => {
                     </PostContainer>
                 </>
             }
-            { path === '' && <img src="/assets/header_logo.svg" alt="logo"/> }
+            { path === 'mypage' && <img src="/assets/header_logo.svg" alt="logo"/> }
+            {
+                path === 'setting' &&
+                <FeedHeader>설정</FeedHeader>
+            }
         </Container>
     );
 };
@@ -50,7 +50,7 @@ const Container = styled.div`
   height: 80px;
   padding: 0 14px;
   box-sizing: border-box;
-  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
   justify-content: space-between;
 `;
 
