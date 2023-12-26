@@ -37,6 +37,11 @@ const Header = () => {
                 path === 'setting' &&
                 <FeedHeader>설정</FeedHeader>
             }
+            {
+                path === 'detail' &&
+                <ButtonContainer onClick={() => navigate(-1)}>
+                    <img src="/assets/back.svg" alt="back" />
+                </ButtonContainer>            }
         </Container>
     );
 };

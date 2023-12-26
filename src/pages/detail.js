@@ -1,38 +1,31 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Container } from "../components/main";
-import {
-  BackButton,
-  BackButtonContainer,
-  BackButtonWrap,
-} from "../components/register";
 import styled from "styled-components";
 import Footer from "../components/common/footer";
+import Header from "../components/common/header";
 
 const Detail = () => {
   const navigate = useNavigate();
-  const { postId } = useParams();
-
-  const onClickBtn = () => {
-    navigate(-1);
-  };
 
   const dummyData = {
-    profile: "/assets/dummyprofile.png",
+    profile: "/assets/profile.svg",
     title: "제 2회 코코톤 참여",
     name: "한정현",
     photo: "/assets/dummyphoto.png",
     view: "235K",
     liked: 87,
     comment: 8,
+    content: "안녕하세요~!~!~1"
   };
-
+  const getCurrentMonth = () => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
+    return `${year}${month < 10 ? '0' : ''}${month}`;
+  };
   return (
     <Container>
-      <BackButtonContainer>
-        <BackButtonWrap onClick={onClickBtn}>
-          <BackButton />
-        </BackButtonWrap>
-      </BackButtonContainer>
+      <Header />
       <ArticleWrap>
         <ProfileHeader>
           <ProfileImage
@@ -44,18 +37,15 @@ const Detail = () => {
             <ProfileName>{dummyData.name}</ProfileName>
           </ProfileInfo>
         </ProfileHeader>
-        <Dayphoto
-          src={dummyData.photo}
-          alt='photo'
-        />
+        <DayPhoto src={dummyData.photo} />
         <ReactionBox>
-          <ReactionItem>
+          <ViewItem>
             <img
               src='/assets/view.svg'
               alt=''
             />
             <ReactionsCount>{dummyData.view}</ReactionsCount>
-          </ReactionItem>
+          </ViewItem>
           <ReactionItem>
             <img
               src='/assets/heart.svg'
@@ -71,14 +61,16 @@ const Detail = () => {
             <ReactionsCount>{dummyData.comment}</ReactionsCount>
           </ReactionItem>
         </ReactionBox>
+        <Content>
+          {dummyData.content}
+        </Content>
       </ArticleWrap>
-      <Addpost>
+      <AddPost onClick={() => navigate(`/post/${getCurrentMonth()}`)}>
         <img
           src='/assets/addpost.svg'
           alt=''
         />
-      </Addpost>
-      {/* <div>detail: {postId}</div> */}
+      </AddPost>
       <Footer />
     </Container>
   );
@@ -90,37 +82,37 @@ const ArticleWrap = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 85vh;
+  height: calc(100% - 160px);
+  overflow-y: scroll;
   box-sizing: border-box;
 `;
 
 const ProfileHeader = styled.div`
   display: flex;
+  align-items: center;
   position: relative;
   width: 100%;
-  margin-top: 10px;
   height: 80px;
+  margin: 10px 0;
+  padding: 0 20px;
+  box-sizing: border-box;
 `;
 
 const ProfileImage = styled.img`
-  position: relative;
   display: flex;
-  top: 10px;
-  left: 10px;
   width: 50px;
   height: 50px;
   border-radius: 70%;
-  margin-right: 10px;
-  border: 1px solid black;
 `;
 
 const ProfileInfo = styled.div`
   display: flex;
   flex-direction: column;
+  height: 80px;
   position: relative;
-  margin-top: 15px;
-  margin-left: 20px;
+  margin-left: 12px;
   gap: 3px;
+  justify-content: center;
 `;
 
 const ProfileTitle = styled.div`
@@ -133,34 +125,56 @@ const ProfileName = styled.div`
   color: gray;
 `;
 
-const Dayphoto = styled.img`
+const DayPhoto = styled.div`
   width: 100%;
-  height: auto;
+  padding-top: 100%;
+  background-image: ${(props) => (props.src ? `url(${props.src})` : 'none')};
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 const ReactionBox = styled.div`
   display: flex;
   gap: 10px;
+  margin-left: 20px;
+  margin-top: 10px;
+`;
+
+const ViewItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ReactionItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;
 
 const ReactionsCount = styled.p`
   color: gray;
   font-size: smaller;
-  margin: 0px;
+  margin: 0;
 `;
 
-const Addpost = styled.div`
-  position: relative;
+const AddPost = styled.div`
+  position: absolute;
   display: flex;
   cursor: pointer;
-  margin-left: 330px;
-  bottom: 60px;
+  bottom: 100px;
+  right: 20px;
 `;
 
-const Article = styled.div``;
+const Content = styled.div`
+  margin-top: 14px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px;
+  margin-bottom: 40px;
+  font-weight: 500;
+`;
