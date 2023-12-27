@@ -1,20 +1,26 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Container } from "../components/main";
 import styled from "styled-components";
 import Footer from "../components/common/footer";
 import Header from "../components/common/header";
+import {useEffect, useState} from "react";
+import {useCookies} from "react-cookie";
+import {getPostById, like} from "../components/actions/post-action";
+import {convertToS3URL} from "./mypage";
 
 const Detail = () => {
   const navigate = useNavigate();
-
+  const [post, setPost] = useState();
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const param = useParams();
+  const [isLike, setIsLike] = useState(false);
   const dummyData = {
     profile: "/assets/profile.svg",
     title: "제 2회 코코톤 참여",
     name: "한정현",
     photo: "/assets/dummyphoto.png",
-    view: "235K",
+    view: "0",
     liked: 87,
-    comment: 8,
+    comment: 0,
     content: "안녕하세요~!~!~1"
   };
   const getCurrentMonth = () => {
@@ -23,48 +29,79 @@ const Detail = () => {
     const month = currentDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
     return `${year}${month < 10 ? '0' : ''}${month}`;
   };
+  const fetchData = async () => {
+    try {
+      return await getPostById(param.postId, cookies.token);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    (async function() {
+      if (!cookies.token) {
+        navigate('/');
+      } else {
+        const response = await fetchData();
+        setPost(response);
+      }
+    })();
+  }, [isLike])
+  const likeHandler = async () => {
+    await like(post.id, cookies.token);
+    setIsLike(!isLike);
+  }
   return (
     <Container>
       <Header />
-      <ArticleWrap>
-        <ProfileHeader>
-          <ProfileImage
-            src={dummyData.profile}
-            alt='Profile'
-          />
-          <ProfileInfo>
-            <ProfileTitle>{dummyData.title}</ProfileTitle>
-            <ProfileName>{dummyData.name}</ProfileName>
-          </ProfileInfo>
-        </ProfileHeader>
-        <DayPhoto src={dummyData.photo} />
-        <ReactionBox>
-          <ViewItem>
-            <img
-              src='/assets/view.svg'
-              alt=''
-            />
-            <ReactionsCount>{dummyData.view}</ReactionsCount>
-          </ViewItem>
-          <ReactionItem>
-            <img
-              src='/assets/heart.svg'
-              alt=''
-            />
-            <ReactionsCount>{dummyData.liked}</ReactionsCount>
-          </ReactionItem>
-          <ReactionItem>
-            <img
-              src='/assets/reply.svg'
-              alt=''
-            />
-            <ReactionsCount>{dummyData.comment}</ReactionsCount>
-          </ReactionItem>
-        </ReactionBox>
-        <Content>
-          {dummyData.content}
-        </Content>
-      </ArticleWrap>
+      {
+        post && <ArticleWrap>
+            <ProfileHeader>
+              <ProfileImage
+                  src={dummyData.profile}
+                  alt='Profile'
+              />
+              <ProfileInfo>
+                <ProfileTitle>{post.title}</ProfileTitle>
+                <ProfileName>{post.username}</ProfileName>
+              </ProfileInfo>
+            </ProfileHeader>
+            <img width="100%" src={convertToS3URL(post.files[0].url)} alt=""/>
+            <ReactionBox>
+              <ViewItem>
+                <img
+                    src='/assets/view.svg'
+                    alt=''
+                />
+                <ReactionsCount>{dummyData.view}</ReactionsCount>
+              </ViewItem>
+              <ReactionItem onClick={likeHandler}>
+                { post.hasLike ?
+                    <img
+                        src="/assets/red_like.svg"
+                        alt=""
+                    />
+                :
+                    <img
+                        src='/assets/heart.svg'
+                        alt=''
+                    />
+                }
+
+                <ReactionsCount>{post.likes}</ReactionsCount>
+              </ReactionItem>
+              <ReactionItem>
+                <img
+                    src='/assets/reply.svg'
+                    alt=''
+                />
+                <ReactionsCount>{dummyData.comment}</ReactionsCount>
+              </ReactionItem>
+            </ReactionBox>
+            <Content>
+              {post.content}
+            </Content>
+          </ArticleWrap>
+      }
       <AddPost onClick={() => navigate(`/post/${getCurrentMonth()}`)}>
         <img
           src='/assets/addpost.svg'
@@ -177,4 +214,13 @@ const Content = styled.div`
   padding: 0 20px;
   margin-bottom: 40px;
   font-weight: 500;
+`;
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 `;

@@ -9,62 +9,65 @@ import Feed from "./pages/feed";
 import Login from "./pages/login";
 import Register from "./pages/register";
 import Detail from "./pages/detail";
+import {RecoilRoot} from "recoil";
 function App() {
   return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route
-            path='/'
-            element={<Main />}
-          />
-          <Route
-            path='/home'
-            element={<Home />}
-          />
-          <Route
-            path='/mypage'
-            element={<MyPage />}
-          />
-          <Route
-            path='/setting'
-            element={<Setting />}
-          />
-          <Route
-            path='/post'
-            element={<Post />}
-          />
-          <Route
-            path='/post/:date'
-            element={<Post />}
-          />
-          <Route
-            path='/detail'
-            element={<Detail />}
-          />
-          <Route
-            path='/detail/:postId'
-            element={<Detail />}
-          />
-          <Route
-            path='/feed'
-            element={<Feed />}
-          />
-          <Route
-            path='/feed/:date'
-            element={<Feed />}
-          />
-          <Route
-            path='/login'
-            element={<Login />}
-          />
-          <Route
-            path='/register'
-            element={<Register />}
-          />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
+      <RecoilRoot>
+        <BrowserRouter>
+          <Layout>
+            <Routes>
+              <Route
+                  path='/'
+                  element={<Main />}
+              />
+              <Route
+                  path='/home'
+                  element={<Home />}
+              />
+              <Route
+                  path='/mypage'
+                  element={<MyPage />}
+              />
+              <Route
+                  path='/setting'
+                  element={<Setting />}
+              />
+              <Route
+                  path='/post'
+                  element={<Post />}
+              />
+              <Route
+                  path='/post/:date'
+                  element={<Post />}
+              />
+              <Route
+                  path='/detail'
+                  element={<Detail />}
+              />
+              <Route
+                  path='/detail/:postId'
+                  element={<Detail />}
+              />
+              <Route
+                  path='/feed'
+                  element={<Feed />}
+              />
+              <Route
+                  path='/feed/:date'
+                  element={<Feed />}
+              />
+              <Route
+                  path='/login'
+                  element={<Login />}
+              />
+              <Route
+                  path='/register'
+                  element={<Register />}
+              />
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </RecoilRoot>
   );
 }
 

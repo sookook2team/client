@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Button, Container } from "./main";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import {createUser} from "./actions/user-action";
 
 export default function Signup2() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [isValidEmail, setValidEmail] = useState(false);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validPassword, setValidPassword] = useState(false);
   const [passwordchk, setPasswordchk] = useState("");
@@ -30,12 +32,13 @@ export default function Signup2() {
 
   const isSame = password === passwordchk;
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (isValidEmail && validPassword && isSame) {
       const agreeBox = document.getElementById("agreebox");
       if (agreeBox.checked) {
-        navigate("/home");
+        await createUser(name, email, password);
+        navigate("/login");
       } else {
         setError("개인정보 활용에 동의해야 합니다.");
       }
@@ -69,6 +72,8 @@ export default function Signup2() {
         <InputButton
           type='text'
           placeholder='이름'
+          onChange={(e) => setName(e.target.value)}
+          value={name}
         />
         <InputButton
           type='email'
@@ -94,7 +99,7 @@ export default function Signup2() {
           type='checkbox'
           id='agreebox'
         />
-        <AgreeLabel for='agreebox'>개인정보 활용에 동의하십니까?</AgreeLabel>
+        <AgreeLabel htmlFor='agreebox'>개인정보 활용에 동의하십니까?</AgreeLabel>
       </form>
       {error && <Error>{error}</Error>}
       <Button onClick={handleSubmit}>회원가입완료</Button>
@@ -110,6 +115,7 @@ export const InputButton = styled.input`
   margin: 30px;
   width: 295px;
   height: 22px;
+  padding: 5px 0;
 `;
 
 export const BackButtonContainer = styled.div`
@@ -162,3 +168,4 @@ const Error = styled.p`
   margin-top: 360px;
   position: absolute;
 `;
+

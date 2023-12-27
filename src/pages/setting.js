@@ -1,8 +1,26 @@
 import styled from "styled-components";
 import Header from "../components/common/header";
 import Footer from "../components/common/footer";
+import {useCookies} from "react-cookie";
+import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
 const Setting = () => {
+    const navigate = useNavigate();
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
+    useEffect(() => {
+        if (!cookies.token) {
+            navigate('/');
+        }
+    }, [cookies])
+    const handleLogout = () => {
+        const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
+
+        if (confirmLogout) {
+            removeCookie('token');
+            navigate('/');
+        }
+    };
     return (
         <Container>
             <Header />
@@ -15,7 +33,7 @@ const Setting = () => {
                         <span>회원탈퇴</span>
                         <img src="/assets/next.svg" alt="" />
                     </List>
-                    <List>
+                    <List onClick={handleLogout}>
                         <span>로그아웃</span>
                         <img src="/assets/next.svg" alt="" />
                     </List>

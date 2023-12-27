@@ -1,20 +1,28 @@
 import styled from 'styled-components';
 import {useParams, useLocation, useNavigate} from "react-router-dom";
+import {useRecoilState} from "recoil";
+import {dateState} from "../recoil";
 
-const Header = () => {
+const Header = (props) => {
+    const { postHandler } = props;
     const param = useParams();
     const location = useLocation();
     const navigate = useNavigate();
     const path = location.pathname.split("/")[1];
+    const [date, setDate] = useRecoilState(dateState);
+    const onFeedBack = () => {
+        setDate('');
+        navigate(-1)
+    }
     return (
         <Container>
             { path === 'feed' &&
                 <>
                     <FeedHeader>
-                        <ButtonContainer onClick={() => navigate(-1)}>
+                        <ButtonContainer onClick={onFeedBack}>
                             <img src="/assets/back.svg" alt="back" />
                         </ButtonContainer>
-                        {param.date.slice(0, 4)}년 {param.date.slice(4)}월의 그 날
+                        {param.date.slice(0, 4)}년 {param.date.slice(4)}월의<img width={80} src="/assets/day.png" alt="" />
                     </FeedHeader>
                     <ButtonContainer onClick={() => navigate(`/post/${param.date}`)}>
                         <img src="/assets/add_post.svg" alt="" />
@@ -28,7 +36,7 @@ const Header = () => {
                     </ButtonContainer>
                     <PostContainer>
                         <PostSpan isCancel onClick={() => navigate(-1)}>취소</PostSpan>
-                        <PostSpan>등록</PostSpan>
+                        <PostSpan onClick={postHandler}>등록</PostSpan>
                     </PostContainer>
                 </>
             }

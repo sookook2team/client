@@ -2,20 +2,52 @@ import styled from "styled-components";
 import Header from "../components/common/header";
 import 'react-datepicker/dist/react-datepicker.css';
 import {useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import DatePicker from "../components/util/datepicker";
 import {useDropzone} from "react-dropzone";
+import axios from "axios";
+import {useCookies} from "react-cookie";
 const Post = () => {
     const param = useParams();
     const [currentYear, setCurrentYear] = useState(param.date.slice(0, 4))
     const [currentMonth, setCurrentMonth] = useState(param.date.slice(4))
     const [openModal, setOpenModal] = useState(false);
     const [images, setImages] = useState([]);
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
+    const navigate = useNavigate();
     const onDrop = (acceptedFiles) => {
         const newImages = acceptedFiles.slice(0, 5);
         setImages(newImages);
     };
+    const handleUpload = async () => {
+        try {
+            const formData = new FormData();
+            images.forEach((image) => {
+                formData.append('files', image);
+            });
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('memberId', cookies.token);
+            formData.append('hashtags', '헤커톤')
+            if (currentMonth.length === 1) {
+                formData.append('date', `${currentYear}-0${currentMonth}-01`);
+            } else {
+                formData.append('date', `${currentYear}-${currentMonth}-01`);
+            }
 
+            await axios.post('http://10.223.117.135:8080/article/create', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            navigate(`/feed/${param.date}`);
+        } catch (error) {
+            // 업로드 실패 시의 처리
+            console.error('Upload failed:', error);
+        }
+    };
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         accept: "image/*",
@@ -29,13 +61,13 @@ const Post = () => {
     }
     return (
         <Container>
-            <Header />
+            <Header postHandler={handleUpload} />
             <DateContainer onClick={() => setOpenModal(true)}>
                 {currentYear}년 {currentMonth}월
                 <img src="/assets/calendar.svg" alt="" />
             </DateContainer>
-            <TitleInput placeholder="제목을 입력해주세요." />
-            <ContentInput placeholder="내용을 입력해주세요." />
+            <TitleInput placeholder="제목을 입력해주세요." onChange={(e) => setTitle(e.target.value)} value={title} />
+            <ContentInput placeholder="내용을 입력해주세요." onChange={(e) => setContent(e.target.value)} value={content} />
             <ImagePreviewContainer>
                 {images.map((image, index) => (
                     <ImagePreview key={index} src={URL.createObjectURL(image)} alt={`uploaded-image-${index}`} />

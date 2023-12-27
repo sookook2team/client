@@ -1,13 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import {useCookies} from "react-cookie";
 
 export default function Signup1() {
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
 
   const onClickBtn = (type) => {
       navigate(`/${type}`)
   }
+  useEffect(() => {
+      if (cookies.token) {
+          navigate('/home');
+      }
+  }, [])
 
   return (
     <Container>
@@ -25,12 +32,12 @@ export default function Signup1() {
 
 export const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   position: relative;
+  justify-content: center;
 `;
 
 export const Button = styled.button`
@@ -43,14 +50,6 @@ export const Button = styled.button`
   border: none;
   width: 295px;
   height: 60px;
-`;
-
-export const Logo = styled.div`
-  background-image: url("/assets/background_logo.svg");
-  background-size: cover;
-  background-position: center;
-  border: 0;
-  outline: none;
 `;
 
 const SignupIntro = styled.p`

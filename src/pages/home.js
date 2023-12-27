@@ -2,14 +2,31 @@ import styled from "styled-components";
 import Footer from "../components/common/footer";
 import {useNavigate} from "react-router-dom";
 import DatePicker from "../components/util/datepicker";
+import {useEffect} from "react";
+import {useCookies} from "react-cookie";
+import {useRecoilState} from "recoil";
+import {dateState} from "../components/recoil";
 
 const Home = () => {
     const navigate = useNavigate();
     const nowYear = new Date().getFullYear();
     const nowMonth = new Date().getMonth();
+    const [cookies, setCookie, removeCookie] = useCookies(['token']);
+    const [date, setDate] = useRecoilState(dateState);
+
     const onClickMonth = (year, month) => {
-        navigate(`/feed/${year}${month}`)
+        setDate(String(year) + String(month));
+        navigate(`/feed/${year}${month}`);
     }
+    useEffect(() => {
+        if (!cookies.token) {
+            navigate('/');
+        } else {
+            if (date) {
+                navigate(`/feed/${date}`);
+            }
+        }
+    }, [])
     return (
         <Container>
             <Content>
