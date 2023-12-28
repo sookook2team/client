@@ -46,7 +46,7 @@ const Header = (props) => {
                 <FeedHeader>설정</FeedHeader>
             }
             {
-                path === 'detail' &&
+                path === 'detail' || path==='appinfo' &&
                 <ButtonContainer onClick={() => navigate(-1)}>
                     <img src="/assets/back.svg" alt="back" />
                 </ButtonContainer>            }

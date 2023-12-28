@@ -10,6 +10,7 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Detail from "./pages/detail";
 import {RecoilRoot} from "recoil";
+import Appinfo from "./pages/appinfo";
 function App() {
   return (
       <RecoilRoot>
@@ -63,6 +64,10 @@ function App() {
               <Route
                   path='/register'
                   element={<Register />}
+              />
+              <Route
+                  path='/appinfo'
+                  element={<Appinfo />}
               />
             </Routes>
           </Layout>

@@ -25,7 +25,7 @@ const Setting = () => {
         <Container>
             <Header />
                 <ListContainer>
-                    <List>
+                    <List onClick={() => navigate('/appinfo')}>
                         <span>앱 정보</span>
                         <img src="/assets/next.svg" alt="" />
                     </List>

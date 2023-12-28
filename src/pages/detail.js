@@ -6,7 +6,33 @@ import {useEffect, useState} from "react";
 import {useCookies} from "react-cookie";
 import {getPostById, like} from "../components/actions/post-action";
 import {convertToS3URL} from "./mypage";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
+const ImageSlider = ({ posts }) => {
+  const settings = {
+    dots: false,
+    infinite: false,
+    arrows: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
+  return (
+      <Slider {...settings}>
+        {posts.map((post, index) => (
+            <img
+                key={index}
+                src={convertToS3URL(post.url)}
+                alt={`Image ${index + 1}`}
+                width="100%"
+              />
+        ))}
+      </Slider>
+  );
+};
 const Detail = () => {
   const navigate = useNavigate();
   const [post, setPost] = useState();
@@ -65,7 +91,7 @@ const Detail = () => {
                 <ProfileName>{post.username}</ProfileName>
               </ProfileInfo>
             </ProfileHeader>
-            <img width="100%" src={convertToS3URL(post.files[0].url)} alt=""/>
+            <ImageSlider posts={post.files} />
             <ReactionBox>
               <ViewItem>
                 <img

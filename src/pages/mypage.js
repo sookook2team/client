@@ -47,7 +47,6 @@ const MyPage = () => {
                 }
                 const res = await getLikePost(cookies.token);
                 if (res.length) {
-                    console.log(res);
                     setLikePost(res.reverse());
                 }
             }
